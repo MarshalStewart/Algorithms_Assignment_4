@@ -288,28 +288,92 @@ private:
 int main()
 {
     Diagraph* dag = new Diagraph();
-    dag->AddNode(0, "zero");
-    dag->AddNode(1, "one");
-    dag->AddNode(2, "two");
-    dag->AddNode(3, "three");
-    dag->AddNode(4, "four");
-    dag->AddNode(5, "five");
-    dag->AddNode(6, "six");
-    dag->AddNode(7, "seven");
-    dag->AddNode(8, "eight");
+    
+    int task_num = 0;
+	string userInput;
 
-    dag->AddEdge("1 7");
-    dag->AddEdge("7 5");
+	system("CLS"); // clear screen
+	while (true) {
+		const char* intro = "Welcome to DAG Main Menu\n"
+			"Press one of the following characters\n"
+			"p: Print DAG\n"
+			"t: Add Task\n"
+			"e: Add Edge\n"
+            "s: Topological Sort\n"
+            "q: Quit\n";
 
-    // 1D Cycle prevention test
-    //dag->AddEdge("6 5");
-    // acycle check
-    //dag->AddEdge("4 1");
+		cout << intro;
+		cin >> userInput;
+		if (userInput == "p") {
+			dag->Display();
+		}
+		else if (userInput == "t") {
 
-    cout << "is acyclical: " << dag->Acyclical_Check() << endl;
+            if (task_num >= LIST_SIZE) {
+                cout << "Max list size reached\n";
+                continue;
+            }
 
-    dag->Display();
+			string userInput2;
+			cout << "Enter task description for task #" << task_num << endl;
+			cin >> userInput2;
+			if (userInput2.empty()) {
+				cout << "Invalid input\n";
+			}
+			else {
+                if (dag->AddNode(task_num, userInput2))
+                    task_num++;
+                else
+                    cout << "Failed to add task\n";
+            }
+		}
+		else if (userInput == "e") {
+			string userInput2, userInput3;
+			cout << "Enter edge (task1 -> task 2)\n";
+			cin >> userInput2 >> userInput3;
+			if (userInput2.empty() || userInput3.empty()) {
+				cout << "Invalid input\n";
+			}
+			else {
+                if (!dag->AddEdge(userInput2 + " " + userInput3)) {
+                    cout << "Failed to add edge\n";
+                }
+            }
 
-    dag->Topological_Sort();
+		}
+        else if (userInput == "s") {
+            dag->Topological_Sort();
+        }
+        else if (userInput == "q") {
+            cout << "Goodbye\n";
+            return 0;
+		}
+		
+	}
 }
+
+    //dag->AddNode(0, "zero");
+    //dag->AddNode(1, "one");
+    //dag->AddNode(2, "two");
+    //dag->AddNode(3, "three");
+    //dag->AddNode(4, "four");
+    //dag->AddNode(5, "five");
+    //dag->AddNode(6, "six");
+    //dag->AddNode(7, "seven");
+    //dag->AddNode(8, "eight");
+
+    //dag->AddEdge("1 7");
+    //dag->AddEdge("7 5");
+
+    //// 1D Cycle prevention test
+    ////dag->AddEdge("6 5");
+    //// acycle check
+    ////dag->AddEdge("4 1");
+
+    //cout << "is acyclical: " << dag->Acyclical_Check() << endl;
+
+    //dag->Display();
+
+    //dag->Topological_Sort();
+//}
 
